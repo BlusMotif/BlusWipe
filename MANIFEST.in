@@ -1,0 +1,17 @@
+include README.md
+include DEPLOYMENT.md
+include requirements.txt
+include Dockerfile
+include docker-compose.yml
+include Procfile
+include railway.json
+include .env.template
+recursive-include templates *
+recursive-include static *
+recursive-exclude uploads *
+recursive-exclude outputs *
+recursive-exclude models *
+recursive-exclude .venv *
+recursive-exclude __pycache__ *
+recursive-exclude *.pyc
+global-exclude .DS_Store
