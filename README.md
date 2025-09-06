@@ -1,280 +1,214 @@
-# BlusWipe Production - AI Background Remover
+# 🎨 BlusWipe - AI Background Remover
 
-🚀 **Production-ready web application for AI-powered background removal.**
+**Developed by Eleblu Nunana**
 
-## 📁 Project Structure
-
-```
-BlusWipe-Production/
-├── 📄 main.py                   # FastAPI application entry point
-├── 📄 requirements.txt          # Python dependencies (pinned versions)
-├── 📄 Dockerfile               # Container configuration
-├── 📄 Procfile                 # Heroku/Railway deployment
-├── 📄 railway.json            # Railway configuration
-├── 📄 .gitignore               # Git ignore rules
-│
-├── 📁 app/                     # Application modules
-│   ├── 📄 __init__.py
-│   ├── 📁 api/                 # API routes
-│   │   ├── 📄 __init__.py
-│   │   └── 📄 routes.py        # REST API endpoints
-│   ├── 📁 core/                # Core business logic
-│   │   ├── 📄 __init__.py
-│   │   └── 📄 background_remover.py  # AI processing engine
-│   └── 📁 utils/               # Utilities
-│       ├── 📄 __init__.py
-│       └── 📄 config.py        # Configuration management
-│
-├── 📁 templates/               # Jinja2 templates
-│   └── 📄 index.html          # Web interface
-├── 📁 static/                 # Static assets (CSS, JS, images)
-├── 📁 uploads/                # Temporary file uploads
-├── 📁 outputs/                # Processed images
-└── 📁 models/                 # AI model cache
-```
+A powerful AI-powered background removal tool built with Python and deployed on Netlify. Remove backgrounds from images instantly using state-of-the-art U2Net deep learning model.
 
 ## ✨ Features
 
-### 🧠 AI-Powered Processing
-- **Multiple Models**: U²-Net, ISNet, Silueta for different use cases
-- **GPU Acceleration**: Automatic CUDA detection and usage
-- **Edge Enhancement**: Post-processing for cleaner results
-- **Batch Processing**: Handle multiple images simultaneously
+- 🤖 **AI-Powered**: Uses U2Net neural network for precise background removal
+- 🚀 **Serverless**: Deployed on Netlify Functions for scalability
+- 📱 **Responsive**: Works perfectly on desktop and mobile devices
+- 🎯 **Easy to Use**: Simple drag-and-drop interface
+- 💨 **Fast Processing**: Optimized for quick image processing
+- 🔒 **Secure**: No image storage, processed in memory only
 
-### 🌐 Production Web Stack
-- **FastAPI**: High-performance async web framework
-- **Modern Architecture**: Clean separation of concerns
-- **RESTful API**: Complete API with OpenAPI documentation
-- **Responsive UI**: Bootstrap 5 web interface
+## 🏗️ Project Structure
 
-### 🔒 Security & Performance
-- **File Validation**: Strict image type and size checking
-- **Path Security**: Protection against directory traversal
-- **Rate Limiting**: Built-in request throttling
-- **Auto Cleanup**: Automatic temporary file management
-- **Health Checks**: Monitoring endpoints for uptime
-
-## 🚀 Quick Deploy
-
-### Option 1: Railway (Recommended)
-1. **Connect GitHub**: Fork this repo and connect to Railway
-2. **Auto Deploy**: Railway detects Python and deploys automatically
-3. **Environment**: Set any environment variables if needed
-4. **Access**: Your app will be live at `https://your-app.railway.app`
-
-### Option 2: Heroku
-```bash
-# Install Heroku CLI
-heroku create your-bluswipe-app
-git push heroku main
+```
+BlusWipe-Production/
+├── dist/                    # Frontend assets (static files)
+│   └── index.html          # Main web interface
+├── netlify/
+│   └── functions/          # Serverless functions
+│       ├── remove-background.py  # Main AI processing function
+│       ├── health.py       # Health check endpoint
+│       └── background_remover.py # AI model utilities
+├── models/                 # AI model cache directory
+├── outputs/               # Processed images output
+├── uploads/               # Temporary upload directory
+├── netlify.toml          # Netlify deployment configuration
+├── requirements.txt      # Python dependencies
+├── runtime.txt          # Python version specification
+└── README.md           # This file
 ```
 
-### Option 3: DigitalOcean App Platform
-1. **Connect Repo**: Link your GitHub repository
-2. **Configure**: Select Python app type
-3. **Deploy**: Automatic deployment from main branch
-
-### Option 4: Google Cloud Run
-```bash
-gcloud run deploy bluswipe \
-  --source . \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated
-```
-
-### Option 5: Docker
-```bash
-# Build and run locally
-docker build -t bluswipe-prod .
-docker run -p 8000:8000 bluswipe-prod
-
-# Or use Docker Compose
-docker-compose up
-```
-
-## 🛠 Local Development
+## 🚀 Deployment Guide
 
 ### Prerequisites
+
 - Python 3.11+
-- 4GB+ RAM (for AI models)
-- 1GB+ disk space
+- Node.js 18+ (for Netlify CLI)
+- Git
 
-### Setup
-```bash
-# Clone and enter directory
-git clone <your-repo>
-cd BlusWipe-Production
+### Local Development
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/BlusMotif/BlusWipe.git
+   cd BlusWipe-Production
+   ```
 
-# Install dependencies
-pip install -r requirements.txt
+2. **Install Netlify CLI**
+   ```bash
+   npm install -g netlify-cli
+   ```
 
-# Run development server
-python main.py --host 127.0.0.1 --port 8000
-```
+3. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### Access
-- **Web Interface**: http://localhost:8000
-- **API Docs**: http://localhost:8000/docs
-- **Health Check**: http://localhost:8000/health
+4. **Run locally**
+   ```bash
+   netlify dev
+   ```
 
-## 📊 API Reference
+5. **Access the application**
+   - Frontend: http://localhost:8888
+   - Functions: http://localhost:8888/.netlify/functions/
 
-### Core Endpoints
+### Production Deployment
 
-#### Remove Background
-```http
-POST /api/remove-background
-Content-Type: multipart/form-data
+#### Option 1: Netlify Web UI
 
-Parameters:
-- file: Image file (max 10MB)
-- model: AI model (u2net, u2netp, u2net_human_seg, silueta, isnet-general-use)
-- enhancement: Edge enhancement strength (0.5-2.0)
+1. **Connect Repository**
+   - Go to [Netlify Dashboard](https://app.netlify.com)
+   - Click "New site from Git"
+   - Connect your GitHub repository
 
-Response: PNG image with background removed
-```
+2. **Configure Build Settings**
+   - Build command: `echo 'Static build complete'`
+   - Publish directory: `dist`
+   - Functions directory: `netlify/functions`
 
-#### Batch Processing
-```http
-POST /api/batch
-Content-Type: multipart/form-data
+3. **Deploy**
+   - Click "Deploy site"
+   - Wait for build to complete
 
-Parameters:
-- files: Multiple image files (max 5)
+#### Option 2: Netlify CLI
 
-Response: JSON with download URLs for processed images
-```
+1. **Login to Netlify**
+   ```bash
+   netlify login
+   ```
 
-#### Health Check
-```http
-GET /health
+2. **Initialize site**
+   ```bash
+   netlify init
+   ```
 
-Response:
-{
-  "status": "healthy",
-  "model_loaded": true,
-  "version": "1.0.0",
-  "available_models": ["u2net", "u2netp", ...]
-}
-```
+3. **Deploy**
+   ```bash
+   netlify deploy --prod
+   ```
 
-#### Available Models
-```http
-GET /api/models
+### Environment Variables
 
-Response:
-{
-  "models": ["u2net", "u2netp", "u2net_human_seg", "silueta", "isnet-general-use"],
-  "current_model": "u2net",
-  "descriptions": {...}
-}
-```
+No environment variables required for basic deployment. All dependencies are managed through `requirements.txt`.
 
 ## 🔧 Configuration
 
-### Environment Variables
-```bash
-# Server configuration
-PORT=8000
-HOST=0.0.0.0
+### netlify.toml
 
-# File limits
-MAX_FILE_SIZE=10485760  # 10MB
-MAX_BATCH_FILES=5
+The `netlify.toml` file contains optimized settings for:
+- Function timeout: 300 seconds
+- Memory allocation: 1024 MB
+- Cache headers for performance
+- Security headers
+- API routing
 
-# AI model settings
-DEFAULT_MODEL=u2net
-USE_GPU=true
+### requirements.txt
 
-# Logging
-LOG_LEVEL=INFO
-```
+Optimized dependencies for Netlify Functions:
+- **Pillow**: Image processing
+- **rembg**: AI background removal
+- **torch**: PyTorch for model execution
+- **onnxruntime**: ONNX model runtime
+- **numpy**: Numerical computing
 
-### Production Settings
-- **Memory**: Minimum 2GB RAM, 4GB recommended
-- **Storage**: ~1GB for model cache
-- **CPU**: 2+ cores recommended
-- **GPU**: Optional but significantly improves performance
+## 📱 Usage
 
-## 📈 Performance & Scaling
+1. **Visit the deployed site**
+2. **Upload an image**:
+   - Click "Choose File" or drag & drop
+   - Supports: JPG, PNG, WEBP
+   - Max size: 10MB
 
-### Processing Times
-- **Small images** (< 1MB): 2-5 seconds
-- **Medium images** (1-5MB): 5-10 seconds  
-- **Large images** (5-10MB): 10-20 seconds
+3. **Process image**:
+   - Click "Remove Background"
+   - Wait for AI processing
 
-### Scaling Options
-- **Horizontal**: Multiple app instances behind load balancer
-- **Vertical**: Increase CPU/RAM for single instance
-- **GPU**: Add GPU support for 3-5x speed improvement
+4. **Download result**:
+   - Click "Download Processed Image"
+   - Image saved as PNG with transparency
 
-### Monitoring
-- Health endpoint: `/health`
-- Metrics: Prometheus-compatible (optional)
-- Logs: Structured JSON logging
-- Alerts: Configure based on health checks
+## 🛠️ Technical Details
 
-## 🛡 Security
+### AI Model
+- **Architecture**: U2Net (U^2-Net)
+- **Purpose**: Salient object detection and background removal
+- **Performance**: Optimized for accuracy and speed
+- **Format**: ONNX for cross-platform compatibility
 
-### Built-in Protection
-- ✅ File type validation
-- ✅ File size limits
-- ✅ Path traversal protection
-- ✅ CORS configuration
-- ✅ Request rate limiting
-- ✅ Input sanitization
+### Backend Architecture
+- **Framework**: Netlify Functions (Python)
+- **Processing**: In-memory image handling
+- **Storage**: No persistent storage (privacy-focused)
+- **Scaling**: Auto-scaling serverless functions
 
-### Production Checklist
-- [ ] Configure allowed origins in CORS
-- [ ] Set up proper logging
-- [ ] Enable HTTPS/SSL
-- [ ] Configure rate limiting
-- [ ] Set up monitoring/alerts
-- [ ] Regular security updates
+### Frontend Technology
+- **Framework**: Vanilla JavaScript (no dependencies)
+- **Styling**: Bootstrap 5 + Custom CSS
+- **Features**: Responsive design, drag-drop, progress indicators
 
-## 🎯 Use Cases
+## 🚨 Troubleshooting
 
-### Business Applications
-- **E-commerce**: Product photography automation
-- **Marketing**: Campaign asset creation
-- **Real Estate**: Property photo enhancement
-- **Fashion**: Model and product shots
+### Common Issues
 
-### Integration Examples
-- **SaaS Platforms**: Integrate via REST API
-- **Mobile Apps**: Process user photos
-- **Batch Processing**: Automated workflows
-- **White-label**: Rebrand and deploy
+1. **Cold Start Delays**
+   - First request may take 10-30 seconds
+   - Subsequent requests are faster
+   - This is normal for serverless functions
 
-## 📞 Support & Deployment
+2. **Large Image Processing**
+   - Images > 5MB may take longer
+   - Consider resizing before upload
+   - Maximum recommended: 10MB
 
-### Pre-deployment Checklist
-- ✅ Dependencies installed
-- ✅ Environment variables set
-- ✅ Health check working
-- ✅ Static files accessible
-- ✅ Database/storage configured (if needed)
+3. **Function Timeout**
+   - Processing timeout: 5 minutes
+   - Very large/complex images may timeout
+   - Try with smaller images
 
-### Troubleshooting
-1. **Memory Issues**: Increase instance RAM
-2. **Slow Processing**: Enable GPU acceleration  
-3. **File Upload Errors**: Check file size limits
-4. **Model Loading**: Verify internet for first download
+### Development Issues
 
-### Support Channels
-- **Documentation**: `/docs` endpoint
-- **Health Status**: `/health` endpoint
-- **Logs**: Check application logs for errors
+1. **Dependencies not installing**
+   ```bash
+   pip install --upgrade pip
+   pip install -r requirements.txt --force-reinstall
+   ```
+
+2. **Local development not working**
+   ```bash
+   netlify dev --live
+   ```
+
+3. **Functions not deploying**
+   - Check Python version (must be 3.11)
+   - Verify file structure matches documentation
+   - Check Netlify build logs
+
+## 📞 Support
+
+- **Developer**: Eleblu Nunana
+- **Issues**: GitHub Issues
+- **Documentation**: This README
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
 
-## 🎉 Ready for Production!
-
-Your BlusWipe application is now optimized and ready for production deployment on any major cloud platform. Choose your preferred hosting option and start serving AI-powered background removal at scale! 
-
-**Happy deploying! 🚀**
+**Made with ❤️ by Eleblu Nunana**

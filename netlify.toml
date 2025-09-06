@@ -1,0 +1,59 @@
+# BlusWipe Production Configuration for Netlify
+
+[build]
+  functions = "netlify/functions"
+  publish = "dist"
+  command = "echo 'Static build complete'"
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
+  NODE_VERSION = "18"
+
+[functions]
+  # Runtime configuration for all functions
+  node_bundler = "none"
+
+[functions."*"]
+  # Increase timeout for AI processing
+  max_duration = 300
+  # Increase memory for AI models  
+  memory = 1024
+
+# API route redirects
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
+
+# SPA fallback for frontend routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for better performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache static assets
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache images
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"

@@ -1,4 +1,4 @@
-# Production environment
+# Netlify deployment
 __pycache__/
 *.py[cod]
 *$py.class
@@ -21,7 +21,7 @@ wheels/
 *.egg
 MANIFEST
 
-# Virtual environments
+# Virtual environments (local development only)
 venv/
 ENV/
 env/
@@ -64,3 +64,6 @@ tests/
 # Development
 *.orig
 .git/
+
+# Local Netlify folder
+.netlify

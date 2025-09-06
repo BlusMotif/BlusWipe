@@ -1,29 +1,18 @@
 # BlusWipe Production Requirements
-# Optimized for cloud deployment
+# Optimized for Netlify Functions deployment
 
-# Core FastAPI stack
-fastapi==0.116.1
-uvicorn[standard]==0.35.0
-python-multipart==0.0.20
-aiofiles==24.1.0
-jinja2==3.1.6
+# Core image processing
+Pillow==10.4.0
+numpy==1.24.4
 
-# Image processing
-Pillow==11.3.0
-numpy==2.2.6
-opencv-python-headless==4.12.0.88
-
-# AI/ML
-torch==2.8.0
-torchvision==0.23.0
+# AI Background Removal
 rembg==2.0.67
+onnxruntime==1.20.1
 
-# Production extras
-gunicorn==23.0.0
-prometheus-fastapi-instrumentator==7.1.0
-python-dotenv==1.1.1
+# PyTorch for model execution (CPU optimized)
+torch==2.1.0+cpu
+torchvision==0.16.0+cpu
 
-# Security and monitoring
-httptools==0.6.4
-watchfiles==1.1.0
-websockets==15.0.1
+# Additional utilities
+requests==2.31.0
+python-multipart==0.0.6
