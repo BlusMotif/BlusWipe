@@ -6,7 +6,7 @@
   command = "echo 'Static build complete'"
 
 [build.environment]
-  PYTHON_VERSION = "3.11"
+  PYTHON_VERSION = "3.11.9"
   NODE_VERSION = "18"
 
 [functions]

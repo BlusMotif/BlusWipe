@@ -7,12 +7,11 @@ numpy==1.24.4
 
 # AI Background Removal
 rembg==2.0.67
-onnxruntime==1.20.1
+onnxruntime==1.19.2
 
 # PyTorch for model execution (CPU optimized)
-torch==2.1.0+cpu
-torchvision==0.16.0+cpu
+torch==2.0.1
+torchvision==0.15.2
 
 # Additional utilities
 requests==2.31.0
-python-multipart==0.0.6
