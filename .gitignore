@@ -6,7 +6,7 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
+# dist/ - Removed from gitignore as we need it for static deployment
 downloads/
 eggs/
 .eggs/
