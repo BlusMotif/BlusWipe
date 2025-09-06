@@ -191,3 +191,7 @@ def handler(event, context):
                 'type': 'server_error'
             })
         }
+
+# For AWS Lambda compatibility (some Netlify setups require this)
+def lambda_handler(event, context):
+    return handler(event, context)

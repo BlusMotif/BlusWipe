@@ -419,6 +419,18 @@
                         fileType: this.currentFile.type
                     });
 
+                    // First test the health endpoint to verify functions are working
+                    try {
+                        const healthResponse = await fetch('/api/health');
+                        console.log('🏥 Health check:', healthResponse.status);
+                        if (healthResponse.ok) {
+                            const healthData = await healthResponse.json();
+                            console.log('🏥 Health data:', healthData);
+                        }
+                    } catch (healthError) {
+                        console.warn('⚠️ Health check failed:', healthError);
+                    }
+
                     const formData = new FormData();
                     formData.append('file', this.currentFile);
 
@@ -438,15 +450,24 @@
                         // Try to get error details from response
                         let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
                         try {
-                            const errorData = await response.json();
-                            if (errorData.error) {
-                                errorMessage = errorData.error;
-                                console.error('🔍 Server error details:', errorData);
+                            const responseText = await response.text();
+                            console.error('📄 Error response:', responseText);
+                            
+                            // Try to parse as JSON
+                            try {
+                                const errorData = JSON.parse(responseText);
+                                if (errorData.error) {
+                                    errorMessage = errorData.error;
+                                    console.error('🔍 Server error details:', errorData);
+                                }
+                            } catch (jsonError) {
+                                // Not JSON, use the text as is
+                                if (responseText) {
+                                    errorMessage = responseText;
+                                }
                             }
                         } catch (e) {
-                            // Response might not be JSON
-                            const errorText = await response.text();
-                            console.error('📄 Error response text:', errorText);
+                            console.error('❌ Error reading response:', e);
                         }
                         throw new Error(errorMessage);
                     }
