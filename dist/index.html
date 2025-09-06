@@ -413,6 +413,12 @@
                 this.processBtn.disabled = true;
 
                 try {
+                    console.log('🚀 Starting image processing...', {
+                        fileName: this.currentFile.name,
+                        fileSize: this.currentFile.size,
+                        fileType: this.currentFile.type
+                    });
+
                     const formData = new FormData();
                     formData.append('file', this.currentFile);
 
@@ -422,11 +428,32 @@
                         body: formData
                     });
 
+                    console.log('📡 Response received:', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        headers: Object.fromEntries(response.headers.entries())
+                    });
+
                     if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        // Try to get error details from response
+                        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+                        try {
+                            const errorData = await response.json();
+                            if (errorData.error) {
+                                errorMessage = errorData.error;
+                                console.error('🔍 Server error details:', errorData);
+                            }
+                        } catch (e) {
+                            // Response might not be JSON
+                            const errorText = await response.text();
+                            console.error('📄 Error response text:', errorText);
+                        }
+                        throw new Error(errorMessage);
                     }
 
                     const blob = await response.blob();
+                    console.log('✅ Image processed successfully, blob size:', blob.size);
+                    
                     this.processedImageUrl = URL.createObjectURL(blob);
                     this.processedImage.src = this.processedImageUrl;
 
@@ -436,9 +463,26 @@
                     this.showAlert('Background removed successfully!', 'success');
 
                 } catch (error) {
-                    console.error('Error processing image:', error);
+                    console.error('❌ Error processing image:', error);
                     this.hideProgress();
-                    this.showAlert('Failed to process image. Please check your internet connection and try again.', 'danger');
+                    
+                    // Provide more specific error messages
+                    let errorMessage = 'Failed to process image. ';
+                    if (error.message.includes('Network request failed') || error.message.includes('Failed to fetch')) {
+                        errorMessage += 'Please check your internet connection and try again.';
+                    } else if (error.message.includes('500')) {
+                        errorMessage += 'Server error occurred. The AI model might be initializing, please try again in a moment.';
+                    } else if (error.message.includes('400')) {
+                        errorMessage += 'Invalid image format. Please try a different image (JPG, PNG, WEBP).';
+                    } else if (error.message.includes('413')) {
+                        errorMessage += 'Image too large. Please use an image smaller than 10MB.';
+                    } else if (error.message.includes('timeout')) {
+                        errorMessage += 'Processing timeout. Please try a smaller image.';
+                    } else {
+                        errorMessage += error.message || 'Unknown error occurred.';
+                    }
+                    
+                    this.showAlert(errorMessage, 'danger');
                 } finally {
                     this.processBtn.disabled = false;
                 }
